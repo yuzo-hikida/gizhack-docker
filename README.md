@@ -10,7 +10,7 @@ $ git clone https://github.com/yuzo-hikida/gizhack-docker.git
 
 クローンできたら下記の手順で`docker-compose up -d`まで行う。
 ```
-$ cd docker-hack
+$ cd gizhack-docker/
 $ cd docker-config
 $ docker-compose build
 $ docker-compose up -d

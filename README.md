@@ -23,10 +23,12 @@ $ git clone https://github.com/yuzo-hikida/gizhack_team_h.git
 ```
 
 クローンが完了したら中のlaravelというディレクトリがあるが中が空なので下記のコマンドで削除。
+最初からgizhack_tean_hしかなかったら下のコマンドだけで良い。
 その後に、クローンで作成された`gizhack_tean_h`の名前をlaravelに変更する
+
 ```
 $ rm -rf laravel
-$ mv gizhack_tean_h laravel
+$ mv gizhack_team_h laravel
 ```
 
 名前の変更が終了したら`docker-compose.yml`直下のディレクトリに移動し
@@ -34,6 +36,7 @@ $ mv gizhack_tean_h laravel
 ```
 $ cd docker-config
 $ docker-compose exec php-fpm bash
+# cd laravel
 # chmod 777 storage -R
 # composer install
 # cp .env.example .env
@@ -42,6 +45,7 @@ $ docker-compose exec php-fpm bash
 .envにmysqlの設定を行い、keyを設定する
 ```
 # php artisan key:generate
+# exit
 ```
 
 docker-compose.ymlを下記に変更して 
@@ -101,3 +105,4 @@ $ docker-compose up -d
 $ docker-compose exec php-fpm sh
 ```
 [https://localhost](https://localhost)にアクセスするとLaravelのデフォルト画面が開く
+

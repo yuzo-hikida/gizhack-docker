@@ -5,7 +5,7 @@
 ```
 $ mkdir プロジェクトディレクトリ
 $ cd 作成したディレクトリ
-$ git clone https://github.com/yuzo-hikida/docker-hack.git
+$ git clone https://github.com/yuzo-hikida/gizhack-docker.git
 ```
 
 クローンできたら下記の手順で`docker-compose up -d`まで行う。

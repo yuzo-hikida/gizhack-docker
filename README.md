@@ -44,55 +44,7 @@ $ docker-compose exec php-fpm bash
 # php artisan key:generate
 ```
 
-docker-compose.ymlを下記に変更して`bdocker-compose up -d`をもう一度行い  
-`docker-compose exec php-fpm bash`の中に入り  
-[https://localhost](https://localhost)にアクセスするとLaravelのデフォルト画面が開く
-
-```docker-compose.yml
-version: '3'
-services:
-  nginx:
-    image: nginx:alpine
-    depends_on:
-      - php-fpm
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ../:/var/www/html
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx/cert-key:/etc/nginx/ssl
-  php-fpm:
-    build: ./php-fpm
-    depends_on:
-      - mysql
-    ports:
-      - 9000:9000
-    volumes:
-      - ../laravel:/var/www/html
-  mysql:
-    image: mysql:5.7
-    ports:
-      - 3306:3306
-    environment:
-      - MYSQL_USER=root
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=gizmohack
-    volumes:
-      - ./data-mysql:/var/lib/mysql
-    container_name: mysql57
-  selenium:
-    image: selenium/standalone-chrome-debug
-    ports:
-      - 4444:4444
-      - 5900:5900
-    depends_on:
-      - nginx
-    privileged: true
-    container_name: selenium
-```
-
-## **Vueのインストール**
+docker-compose.ymlを下記に変更して 
 
 docker-compose.ymlの変更
 ```
@@ -107,7 +59,7 @@ services:
       - 443:443
     volumes:
       - ../:/var/www/html
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./nginx/cert-key:/etc/nginx/ssl
   php-fpm:
     build: ./php-fpm
@@ -115,10 +67,6 @@ services:
       - mysql
     ports:
       - 9000:9000
-      - 8001:8001
-      - 3000:3000
-    environment:
-      - HOST=0.0.0.0
     working_dir: /var/www/html
     volumes:
       - ../laravel:/var/www/html
@@ -152,4 +100,4 @@ $ docker-compose build
 $ docker-compose up -d
 $ docker-compose exec php-fpm sh
 ```
-
+[https://localhost](https://localhost)にアクセスするとLaravelのデフォルト画面が開く

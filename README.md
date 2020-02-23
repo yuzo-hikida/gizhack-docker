@@ -27,7 +27,6 @@ $ git clone https://github.com/yuzo-hikida/gizhack_team_h.git
 その後に、クローンで作成された`gizhack_tean_h`の名前をlaravelに変更する
 
 ```
-$ rm -rf laravel
 $ mv gizhack_team_h laravel
 ```
 

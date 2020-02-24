@@ -78,7 +78,7 @@ services:
     ports:
       - 3306:3306
     environment:
-      - MYSQL_USER=root
+      - MYSQL_USER=gizhack
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=gizmohack
     volumes:

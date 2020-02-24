@@ -41,6 +41,15 @@ $ docker-compose exec php-fpm bash
 # cp .env.example .env
 ```
 
+.envの修正
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=gizhack
+DB_USERNAME=gizhack
+DB_PASSWORD=secret
+```
 .envにmysqlの設定を行い、keyを設定する
 ```
 # php artisan key:generate

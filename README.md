@@ -105,3 +105,17 @@ $ docker-compose exec php-fpm sh
 ```
 [https://localhost](https://localhost)にアクセスするとLaravelのデフォルト画面が開く
 
+**Vueの設定**
+
+```
+npm install
+npm run dev
+```
+
+```
+npm install vue-router vue-axios --save
+npm install --save-dev vuex
+npm run watch
+```
+
+でvueが使える確認してください。

@@ -108,7 +108,6 @@ services:
 変更が完了したら下記のコマンド
 
 ```
-$ docker-compose build
 $ docker-compose up -d
 $ docker-compose exec php-fpm sh
 ```

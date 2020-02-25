@@ -127,3 +127,11 @@ npm run watch
 ```
 
 でvueが使える確認してください。
+
+もし、`npm run watch`してコンパイルするときに下記のようなエラーが出たら  
+```
+npm install
+npm rebuild node-sass
+```
+
+を行なってください。

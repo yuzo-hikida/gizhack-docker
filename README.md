@@ -129,9 +129,14 @@ npm run watch
 でvueが使える確認してください。
 
 もし、`npm run watch`してコンパイルするときに下記のようなエラーが出たら  
+
+```
+This usually happens because your environment has changed since running `npm install`.
+Run `npm rebuild node-sass` to download the binding for your current environment.
+```
+
 ```
 npm install
 npm rebuild node-sass
 ```
-
 を行なってください。

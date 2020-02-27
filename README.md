@@ -44,7 +44,7 @@ $ docker-compose exec php-fpm bash
 .envの修正
 ```
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
+DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=gizmohack
 DB_USERNAME=gizhack
@@ -88,7 +88,8 @@ services:
       - 3306:3306
     environment:
       - MYSQL_USER=gizhack
-      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_PASSWORD=secret
       - MYSQL_DATABASE=gizmohack
     volumes:
       - ./data-mysql:/var/lib/mysql
@@ -108,7 +109,7 @@ services:
 変更が完了したら下記のコマンド
 
 ```
-$ docker-compose up -d
+$ docker-compose up -d --build
 $ docker-compose exec php-fpm sh
 ```
 [https://localhost](https://localhost)にアクセスするとLaravelのデフォルト画面が開く
@@ -140,3 +141,4 @@ npm install
 npm rebuild node-sass
 ```
 を行なってください。
+

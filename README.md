@@ -1,14 +1,13 @@
-# **Laravel vue docker 環境構築**
-
-## **手順**
 最初に作業用のディレクトリを作成してその中にdockerのリポジトリをクローンする。
+
 ```
 $ mkdir プロジェクトディレクトリ
 $ cd 作成したディレクトリ
 $ git clone https://github.com/yuzo-hikida/gizhack-docker.git
 ```
 
-クローンできたら下記の手順で`docker-compose up -d`まで行う。
+クローンできたら下記の手順でdocker-compose up -dまで行う。
+
 ```
 $ cd gizhack-docker/
 $ cd docker-config
@@ -16,32 +15,35 @@ $ docker-compose build
 $ docker-compose up -d
 ```
 
-ここまでできたら一度上の階層のディレクトリに戻りlaravelのリポジトリをクローンする。
+ここまでできたら一度上の階層のディレクトリに戻りsrcディレクトリを作成します。  
+srcディレクトリにはLaravelとvueのディレクトリを入れる為  
+両方クローンをしましょう。
+
+## **①laravel設定**
+
 ```
 $ cd ../
-$ git clone https://github.com/yuzo-hikida/gizhack_team_h.git
+$cd src
+$ git clone -b develop https://github.com/gizumo-inc/gizhack_team_h.git //developをクローン
+$ mv gizhack_team_h laravel //名前をlaravelに変更
 ```
 
-クローンが完了したら中のlaravelというディレクトリがあるが中が空なので下記のコマンドで削除。
-最初からgizhack_tean_hしかなかったら下のコマンドだけで良い。
-その後に、クローンで作成された`gizhack_tean_h`の名前をlaravelに変更する
+名前の変更が終了したらdocker-compose.yml直下のディレクトリに移動し 下記の手順で.envの変更まで行う。
 
 ```
-$ mv gizhack_team_h laravel
-```
-
-名前の変更が終了したら`docker-compose.yml`直下のディレクトリに移動し
-下記の手順で`.env`の変更まで行う。
-```
-$ cd docker-config
+$ cd ../ //docker-compose.yml直下に移動
+$ cd docker-config/
 $ docker-compose exec php-fpm bash
 # cd laravel
-# chmod 777 storage -R
+# chmod -R 777 bootstrap/cache
+# chmod -R 777 storage
 # composer install
 # cp .env.example .env
+# vi .env
 ```
 
 .envの修正
+
 ```
 DB_CONNECTION=mysql
 DB_HOST=mysql
@@ -50,95 +52,78 @@ DB_DATABASE=gizmohack
 DB_USERNAME=gizhack
 DB_PASSWORD=secret
 ```
+
 .envにmysqlの設定を行い、keyを設定する
+
 ```
 # php artisan key:generate
 # exit
 ```
 
-docker-compose.ymlを下記に変更して 
-
-docker-compose.ymlの変更
-```
-version: '3'
-services:
-  nginx:
-    image: nginx:alpine
-    depends_on:
-      - php-fpm
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ../laravel:/var/www/html
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx/cert-key:/etc/nginx/ssl
-  php-fpm:
-    build: ./php-fpm
-    depends_on:
-      - mysql
-    ports:
-      - 9000:9000
-    working_dir: /var/www/html
-    volumes:
-      - ../laravel:/var/www/html
-  mysql:
-    image: mysql:5.7
-    ports:
-      - 3306:3306
-    environment:
-      - MYSQL_USER=gizhack
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_PASSWORD=secret
-      - MYSQL_DATABASE=gizmohack
-    volumes:
-      - ./data-mysql:/var/lib/mysql
-    container_name: mysql57
-  selenium:
-    image: selenium/standalone-chrome-debug
-    ports:
-      - 4444:4444
-      - 5900:5900
-    depends_on:
-      - nginx
-    privileged: true
-    container_name: selenium
+## **②Vueの設定**
 
 ```
-
-変更が完了したら下記のコマンド
-
-```
-$ docker-compose up -d --build
-$ docker-compose exec php-fpm sh
-```
-[https://localhost](https://localhost)にアクセスするとLaravelのデフォルト画面が開く
-
-**Vueの設定**
-
-```
-npm install
-npm run dev
+$ cd ../
+$ cd src
+$ git clone https://github.com/kan-kan/vue-front.git
 ```
 
 ```
-npm install vue-router vue-axios --save
-npm install --save-dev vuex
-npm run watch
+$ cd vue-front/
+$ npm install
+$ git branch
 ```
 
-でvueが使える確認してください。
-
-もし、`npm run watch`してコンパイルするときに下記のようなエラーが出たら  
-
-```
-This usually happens because your environment has changed since running `npm install`.
-Run `npm rebuild node-sass` to download the binding for your current environment.
-```
+`* master と出ます。`  
+作業ブランチを取り込みます。
 
 ```
-npm install
-npm rebuild node-sass
+$ git branch -a
 ```
-を行なってください。
+`* master`  
+  remotes/origin/GIZ-123  
+  remotes/origin/HEAD -> origin/master  
+  remotes/origin/develop  
+  remotes/origin/master  
+
+- 通常はdevelopを取り込む ーーーーーーーーーーーーーーーーーーーーーーーー
+
+```
+$ git checkout -b develop origin/develop
+$ git branch
+```
+`* develop ブランチが切り替わる`  
+master  
+
+```
+$ npm run build
+```
+
+- ログイン画面出す場合 ーーーーーーーーーーーーーーーーーーーーーーーーーーー
+```
+$ git checkout -b GIZ-123 origin/GIZ-123
+$ git branch
+```
+`* GIZ-123 ブランチが切り替わる`  
+master  
+
+```
+$ npm run build
+```
+
+## **③確認**
+
+[https://localhost/login](https://localhost/login)画面でます。
+
+## **④開発用フロントサーバーの立ち上げ**
+
+```
+$ cd ../../
+$ cd docker-config/
+$ docker-compose exec nginx sh
+# cd /var/www/html/vue-front/
+# apk add --update nodejs nodejs-npm
+# npm rebuild node-sass
+# npm run serve
+```
 

@@ -113,7 +113,7 @@ $ npm run build
 
 ## **③確認**
 
-[https://localhost/login](https://localhost/login)画面でます。
+[http://localhost:8080/login](http://localhost:8080/login)画面でます。
 
 ## **④開発用フロントサーバーの立ち上げ**
 
